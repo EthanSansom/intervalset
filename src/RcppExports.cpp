@@ -10,33 +10,57 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// squash_intervals
-NumericMatrix squash_intervals(NumericMatrix x);
-RcppExport SEXP _intervalset_squash_intervals(SEXP xSEXP) {
+// squash_interval_set
+NumericMatrix squash_interval_set(NumericMatrix x, bool na_rm);
+RcppExport SEXP _intervalset_squash_interval_set(SEXP xSEXP, SEXP na_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(squash_intervals(x));
+    Rcpp::traits::input_parameter< bool >::type na_rm(na_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(squash_interval_set(x, na_rm));
     return rcpp_result_gen;
 END_RCPP
 }
-// merge_intervals
-NumericMatrix merge_intervals(NumericMatrix x, NumericMatrix y);
-RcppExport SEXP _intervalset_merge_intervals(SEXP xSEXP, SEXP ySEXP) {
+// union_interval_set
+NumericMatrix union_interval_set(NumericMatrix x, NumericMatrix y);
+RcppExport SEXP _intervalset_union_interval_set(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(merge_intervals(x, y));
+    rcpp_result_gen = Rcpp::wrap(union_interval_set(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// compliment_interval_set
+NumericMatrix compliment_interval_set(NumericMatrix x);
+RcppExport SEXP _intervalset_compliment_interval_set(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(compliment_interval_set(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// inf
+NumericVector inf();
+RcppExport SEXP _intervalset_inf() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(inf());
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_intervalset_squash_intervals", (DL_FUNC) &_intervalset_squash_intervals, 1},
-    {"_intervalset_merge_intervals", (DL_FUNC) &_intervalset_merge_intervals, 2},
+    {"_intervalset_squash_interval_set", (DL_FUNC) &_intervalset_squash_interval_set, 2},
+    {"_intervalset_union_interval_set", (DL_FUNC) &_intervalset_union_interval_set, 2},
+    {"_intervalset_compliment_interval_set", (DL_FUNC) &_intervalset_compliment_interval_set, 1},
+    {"_intervalset_inf", (DL_FUNC) &_intervalset_inf, 0},
     {NULL, NULL, 0}
 };
 
