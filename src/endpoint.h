@@ -7,14 +7,16 @@ struct Endpoint {
   bool is_start {};
   double value {};
 };
+struct BinaryEndpoint {
+  bool is_start {};
+  bool in_x {};
+  double value {};
+};
 
 using Endpoints = std::vector<Endpoint>;
+using BinaryEndpoints = std::vector<BinaryEndpoint>;
 
-bool operator< (const Endpoint &e1, const Endpoint &e2) {
-  if (e1.value == e2.value) {
-    return e1.is_start < e2.is_start;
-  }
-  return e1.value < e2.value;
-}
+bool operator< (const Endpoint &a, const Endpoint &b);
+bool operator< (const BinaryEndpoint &a, const BinaryEndpoint &b);
 
 #endif
