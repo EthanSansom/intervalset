@@ -1,102 +1,58 @@
-# TODO:
-# - Remove exports and references to {generics}, {rlang}, and {vctrs} (switch to base only)
-# - Add unit tests
-
 # class ------------------------------------------------------------------------
 
+# NOTE: Initiates the same as `new_iset()`, converts to list of matrix representation.
 #' @export
-new_intervalset <- function(list_of_matrices) {
-  vctrs::new_vctr(list_of_matrices, class = "intervalset")
+new_iset0 <- function(sizes, starts, ends) {
+  sizes_chop <- sizes
+  sizes_chop[is.na(sizes_chop)] <- 1L
+
+  starts <- vec_chop(starts, sizes = sizes_chop)
+  ends <- vec_chop(ends, sizes = sizes_chop)
+
+  matrices <- purrr::map2(starts, ends, ~matrix(c(.x, .y), ncol = 2L))
+  matrices[is.na(sizes)] <- list(NULL)
+  new_iset0_impl(matrices)
+}
+
+new_iset0_impl <- function(list_of_matrices) {
+  vctrs::new_vctr(list_of_matrices, class = "iset0")
 }
 
 #' @export
-is_intervalset <- function(x) {
-  inherits(x, "intervalset")
+is_iset0 <- function(x) {
+  inherits(x, "iset0")
 }
 
 #' @export
-is_emptyset <- function(x) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  lengths(x) == 0L
-}
+format.iset0 <- function(x, ...) {
+  fmt <- function(x) {
+    paste0("{", paste0("[", starts(x), ", ", ends(x), "]", collapse = ", "), "}")
+  }
 
-#' @export
-is.na.intervalset <- function(x) {
-  vapply(x, \(ivs) length(ivs) && is.na(ivs[[1]]), logical(1L))
-}
-
-#' @export
-format.intervalset <- function(x, ...) {
-  # TODO: In the {phinterval} case, we'd convert the starts and ends to
-  #       POSIXct (origin = "1970-01-01") so that they'd be formatted as
-  #       times rather than as numbers.
-  out <- vapply(
-    x,
-    \(ivs) {
-      paste0(
-        "{",
-        paste0("[", starts(ivs), ", ", ends(ivs), "]", collapse = " U "),
-        "}"
-      )
-    },
-    FUN.VALUE = character(1)
-  )
-  out[is_emptyset(x)] <- "{}"
+  out <- purrr::map_chr(x, fmt)
+  out[is_hole(x)] <- "{}"
   out[is.na(x)] <- NA_character_
   out
+}
+
+is_hole <- function(x) {
+  purrr::map_lgl(x, ~ is.matrix(.x) && length(.x) == 0L)
 }
 
 # set operations ---------------------------------------------------------------
 
 #' @export
-squash <- function(x, na.rm = TRUE) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  stopifnot("`na.rm` must be `TRUE` or `FALSE`." = is.logical(na.rm) && length(na.rm) == 1 && !is.na(na.rm))
+old_intersect <- function(x, y) {
+  stopifnot("`x` must be an <iset0>." = is_iset0(x))
+  stopifnot("`y` must be an <iset0>." = is_iset0(y))
+  sets <- vec_recycle_common(x, y)
 
-  new_intervalset(list(
-    squash_interval_set(do.call(rbind, vctrs::vec_data(x)), na.rm)
-  ))
-}
-
-#' @export
-intervalset_intersect <- function(x, y) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  stopifnot("`y` must be an <intervalset>." = is_intervalset(y))
-
-  new_intervalset(
-    v_intersect_interval_set(vctrs::vec_data(x), vctrs::vec_data(y))
-  )
-}
-
-#' @export
-intervalset_union <- function(x, y) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  stopifnot("`y` must be an <intervalset>." = is_intervalset(y))
-
-  new_intervalset(
-    v_union_interval_set(vctrs::vec_data(x), vctrs::vec_data(y))
-  )
-}
-
-#' @export
-intervalset_setdiff <- function(x, y) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  stopifnot("`y` must be an <intervalset>." = is_intervalset(y))
-
-  new_intervalset(
-    v_intersect_intervalset(
-      vctrs::vec_data(x),
-      v_compliment_interval_set(vctrs::vec_data(y))
+  new_iset0_impl(
+    cpp_intersect_interval_sets(
+      vctrs::vec_data(sets[[1]]),
+      vctrs::vec_data(sets[[2]])
     )
   )
-}
-
-#' @export
-intervalset_overlaps <- function(x, y) {
-  stopifnot("`x` must be an <intervalset>." = is_intervalset(x))
-  stopifnot("`y` must be an <intervalset>." = is_intervalset(y))
-
-  v_overlaps_interval_set(vctrs::vec_data(x), vctrs::vec_data(y))
 }
 
 # utils ------------------------------------------------------------------------

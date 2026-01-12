@@ -151,29 +151,59 @@ a
 
 a[NA] # Shoot, still coerces elements to `NULL`
 
+# NA Replacement ---------------------------------------------------------------
+
+na_to_one_1 <- function(x) {
+  ifelse(is.na(x), 1L, x)
+}
+
+na_to_one_2 <- function(x) {
+  x[is.na(x)] <- 1L
+  x
+}
+
+x <- shuffle(1:(1000*1000))
+x[sample(seq_along(x), length(x) %/% 20)] <- NA
+bench::mark(
+  na_to_one_1(x),
+  na_to_one_2(x)
+)
+
 # CPP Version ------------------------------------------------------------------
 
-test_points <- list(NULL, as.numeric(1:5), as.numeric(10:12), numeric(0), 10)
-sizes <- lengths(test_points)
-sizes[vapply(test_points, is.null, TRUE)] <- NA_integer_
+if (FALSE) {
+  test_points <- list(NULL, as.numeric(1:5), as.numeric(10:12), numeric(0), 10)
+  sizes <- lengths(test_points)
+  sizes[vapply(test_points, is.null, TRUE)] <- NA_integer_
 
-points_unchop_cpp_refined(test_points)
-points_unchop_cpp(test_points, sizes)
-points_unchop(test_points)
+  points_unchop_cpp_refined(test_points)
+  points_unchop_cpp(test_points, sizes)
+  points_unchop(test_points)
 
-bench::mark(
-  refined = points_unchop_cpp_refined(test_points),
-  fast = list_of_numeric_unchop_cpp(test_points),
-  default = points_unchop_cpp(test_points, sizes),
-  r = points_unchop(test_points)
-)
+  bench::mark(
+    refined = points_unchop_cpp_refined(test_points),
+    fast = list_of_numeric_unchop_cpp(test_points),
+    default = points_unchop_cpp(test_points, sizes),
+    r = points_unchop(test_points)
+  )
 
-chopped_with_na_sizes <- lengths(chopped_with_na)
-chopped_with_na_sizes[vapply(chopped_with_na, is.null, TRUE)] <- NA_integer_
+  chopped_with_na_sizes <- lengths(chopped_with_na)
+  chopped_with_na_sizes[vapply(chopped_with_na, is.null, TRUE)] <- NA_integer_
 
-bench::mark(
-  refined = points_unchop_cpp_refined(chopped_with_na),
-  fast = list_of_numeric_unchop_cpp(chopped_with_na),
-  default = points_unchop_cpp(chopped_with_na, chopped_with_na_sizes),
-  r = points_unchop(chopped_with_na)
-)
+  # - fast_safe: Copies elements using `std::copy()`
+  # - fast_og:   Copies elements using `std::memcpy()`
+  bench::mark(
+    refined = points_unchop_cpp_refined(chopped_with_na),
+    fast_safe = list_of_numeric_unchop_cpp(chopped_with_na),
+    fast_og = list_of_numeric_unchop_cpp_fst(chopped_with_na),
+    default = points_unchop_cpp(chopped_with_na, chopped_with_na_sizes),
+    r = points_unchop(chopped_with_na)
+  )[1:6]
+  # expression      min   median `itr/sec` mem_alloc `gc/sec`
+  # <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+  # 1 refined       839ms    839ms      1.19    76.3MB     0
+  # 2 fast_safe     438ms    450ms      2.22    76.3MB     1.11
+  # 3 fast_og       217ms    328ms      3.05    76.3MB     1.52
+  # 4 default       687ms    687ms      1.46    76.3MB     0
+  # 5 r             676ms    676ms      1.48   142.3MB     2.96
+}

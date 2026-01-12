@@ -10,236 +10,101 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// points_unchop_cpp
-NumericVector points_unchop_cpp(const List& chopped, const IntegerVector& sizes);
-RcppExport SEXP _intervalset_points_unchop_cpp(SEXP choppedSEXP, SEXP sizesSEXP) {
+// cpp_intersect_interval_sets
+List cpp_intersect_interval_sets(const List& x, const List& y);
+RcppExport SEXP _intervalset_cpp_intersect_interval_sets(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_intersect_interval_sets(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// intersect_cpp
+List intersect_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
+RcppExport SEXP _intervalset_intersect_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(intersect_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// span_set_only_cpp
+List span_set_only_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
+RcppExport SEXP _intervalset_span_set_only_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(span_set_only_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// do_nothing_cpp
+List do_nothing_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
+RcppExport SEXP _intervalset_do_nothing_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(do_nothing_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// span_buffer_only_cpp
+List span_buffer_only_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
+RcppExport SEXP _intervalset_span_buffer_only_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(span_buffer_only_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// listof_dbl_unchop_cpp
+NumericVector listof_dbl_unchop_cpp(const List& chopped);
+RcppExport SEXP _intervalset_listof_dbl_unchop_cpp(SEXP choppedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type chopped(choppedSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type sizes(sizesSEXP);
-    rcpp_result_gen = Rcpp::wrap(points_unchop_cpp(chopped, sizes));
-    return rcpp_result_gen;
-END_RCPP
-}
-// points_unchop_cpp_refined
-NumericVector points_unchop_cpp_refined(const List& chopped);
-RcppExport SEXP _intervalset_points_unchop_cpp_refined(SEXP choppedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type chopped(choppedSEXP);
-    rcpp_result_gen = Rcpp::wrap(points_unchop_cpp_refined(chopped));
-    return rcpp_result_gen;
-END_RCPP
-}
-// list_of_numeric_unchop_cpp
-NumericVector list_of_numeric_unchop_cpp(const List& chopped);
-RcppExport SEXP _intervalset_list_of_numeric_unchop_cpp(SEXP choppedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type chopped(choppedSEXP);
-    rcpp_result_gen = Rcpp::wrap(list_of_numeric_unchop_cpp(chopped));
-    return rcpp_result_gen;
-END_RCPP
-}
-// squash_interval_set
-NumericMatrix squash_interval_set(NumericMatrix x, bool na_rm);
-RcppExport SEXP _intervalset_squash_interval_set(SEXP xSEXP, SEXP na_rmSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< bool >::type na_rm(na_rmSEXP);
-    rcpp_result_gen = Rcpp::wrap(squash_interval_set(x, na_rm));
-    return rcpp_result_gen;
-END_RCPP
-}
-// union_interval_set
-NumericMatrix union_interval_set(NumericMatrix x, NumericMatrix y);
-RcppExport SEXP _intervalset_union_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(union_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_union_interval_set
-List v_union_interval_set(const List& x, const List& y);
-RcppExport SEXP _intervalset_v_union_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(v_union_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// compliment_interval_set
-NumericMatrix compliment_interval_set(NumericMatrix x);
-RcppExport SEXP _intervalset_compliment_interval_set(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(compliment_interval_set(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_compliment_interval_set
-List v_compliment_interval_set(const List& x);
-RcppExport SEXP _intervalset_v_compliment_interval_set(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(v_compliment_interval_set(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// intersect_interval_set
-NumericMatrix intersect_interval_set(NumericMatrix x, NumericMatrix y);
-RcppExport SEXP _intervalset_intersect_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(intersect_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_intersect_interval_set
-List v_intersect_interval_set(const List& x, const List& y);
-RcppExport SEXP _intervalset_v_intersect_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(v_intersect_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// overlaps_interval_set
-int overlaps_interval_set(NumericMatrix x, NumericMatrix y);
-RcppExport SEXP _intervalset_overlaps_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(overlaps_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_overlaps_interval_set
-LogicalVector v_overlaps_interval_set(const List& x, const List& y);
-RcppExport SEXP _intervalset_v_overlaps_interval_set(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(v_overlaps_interval_set(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// within_intervalset
-int within_intervalset(NumericMatrix x, NumericMatrix y);
-RcppExport SEXP _intervalset_within_intervalset(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(within_intervalset(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_within_intervalset
-LogicalVector v_within_intervalset(const List& x, const List& y);
-RcppExport SEXP _intervalset_v_within_intervalset(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(v_within_intervalset(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// contains_point
-int contains_point(NumericMatrix x, double t);
-RcppExport SEXP _intervalset_contains_point(SEXP xSEXP, SEXP tSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type t(tSEXP);
-    rcpp_result_gen = Rcpp::wrap(contains_point(x, t));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_contains_point
-LogicalVector v_contains_point(const List& x, NumericVector t);
-RcppExport SEXP _intervalset_v_contains_point(SEXP xSEXP, SEXP tSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type t(tSEXP);
-    rcpp_result_gen = Rcpp::wrap(v_contains_point(x, t));
-    return rcpp_result_gen;
-END_RCPP
-}
-// remove_instants
-NumericMatrix remove_instants(NumericMatrix x);
-RcppExport SEXP _intervalset_remove_instants(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(remove_instants(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// v_remove_instants
-List v_remove_instants(const List& x);
-RcppExport SEXP _intervalset_v_remove_instants(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(v_remove_instants(x));
+    rcpp_result_gen = Rcpp::wrap(listof_dbl_unchop_cpp(chopped));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_intervalset_points_unchop_cpp", (DL_FUNC) &_intervalset_points_unchop_cpp, 2},
-    {"_intervalset_points_unchop_cpp_refined", (DL_FUNC) &_intervalset_points_unchop_cpp_refined, 1},
-    {"_intervalset_list_of_numeric_unchop_cpp", (DL_FUNC) &_intervalset_list_of_numeric_unchop_cpp, 1},
-    {"_intervalset_squash_interval_set", (DL_FUNC) &_intervalset_squash_interval_set, 2},
-    {"_intervalset_union_interval_set", (DL_FUNC) &_intervalset_union_interval_set, 2},
-    {"_intervalset_v_union_interval_set", (DL_FUNC) &_intervalset_v_union_interval_set, 2},
-    {"_intervalset_compliment_interval_set", (DL_FUNC) &_intervalset_compliment_interval_set, 1},
-    {"_intervalset_v_compliment_interval_set", (DL_FUNC) &_intervalset_v_compliment_interval_set, 1},
-    {"_intervalset_intersect_interval_set", (DL_FUNC) &_intervalset_intersect_interval_set, 2},
-    {"_intervalset_v_intersect_interval_set", (DL_FUNC) &_intervalset_v_intersect_interval_set, 2},
-    {"_intervalset_overlaps_interval_set", (DL_FUNC) &_intervalset_overlaps_interval_set, 2},
-    {"_intervalset_v_overlaps_interval_set", (DL_FUNC) &_intervalset_v_overlaps_interval_set, 2},
-    {"_intervalset_within_intervalset", (DL_FUNC) &_intervalset_within_intervalset, 2},
-    {"_intervalset_v_within_intervalset", (DL_FUNC) &_intervalset_v_within_intervalset, 2},
-    {"_intervalset_contains_point", (DL_FUNC) &_intervalset_contains_point, 2},
-    {"_intervalset_v_contains_point", (DL_FUNC) &_intervalset_v_contains_point, 2},
-    {"_intervalset_remove_instants", (DL_FUNC) &_intervalset_remove_instants, 1},
-    {"_intervalset_v_remove_instants", (DL_FUNC) &_intervalset_v_remove_instants, 1},
+    {"_intervalset_cpp_intersect_interval_sets", (DL_FUNC) &_intervalset_cpp_intersect_interval_sets, 2},
+    {"_intervalset_intersect_cpp", (DL_FUNC) &_intervalset_intersect_cpp, 6},
+    {"_intervalset_span_set_only_cpp", (DL_FUNC) &_intervalset_span_set_only_cpp, 6},
+    {"_intervalset_do_nothing_cpp", (DL_FUNC) &_intervalset_do_nothing_cpp, 6},
+    {"_intervalset_span_buffer_only_cpp", (DL_FUNC) &_intervalset_span_buffer_only_cpp, 6},
+    {"_intervalset_listof_dbl_unchop_cpp", (DL_FUNC) &_intervalset_listof_dbl_unchop_cpp, 1},
     {NULL, NULL, 0}
 };
 

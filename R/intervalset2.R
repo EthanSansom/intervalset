@@ -1,3 +1,82 @@
+# todos ------------------------------------------------------------------------
+
+# TODO: Custom `c()`
+# Implement a custom `c()` and `vec_c()` (if able) implementation. We don't need
+# the proxy, because combining multiple interval-sets just involves concatenating
+# their starts, ends, and sizes.
+#
+# E.g. c(x, y) -> sizes = c(x$sizes, y$sizes), starts = c(x$starts, y$starts), etc.
+#
+# So, we only need to convert <Interval> vectors to the correct sizes, starts, ends
+# and then concatenate.
+
+# TODO: Dealing with `vec_proxy()`
+# This is looking like we'll want to circumvent `vec_proxy()` everywhere, and
+# use the current `vec_proxy()` only for `vec_proxy_equal()`. Or, maybe just
+# leave the slow `vec_proxy()`, so this works as expected (but slower) for
+# {vctrs} specific operations (e.g. vec_size(), vec_c(), etc.)
+
+# TODO: Custom `[<-` and `[[<-`
+# Manual multiple dispatch:
+# - if (is.logical(value) && allNA(value)) { handle special NA case }
+# - if (is.interval(value)) { lubridate <Interval> case }
+# - if (is_phinterval(value)) { <phinterval> case }
+#
+sub_assign <- function(x, i, value) {
+  # Let {vctrs} handle converting `i` to an integer vector
+  i <- vctrs::vec_as_location(i, n = length(x), names = names(x))
+
+  # Check size compatibility in R
+  stopifnot(length(value) == length(i) || length(value) == 1L)
+
+  # In C++, we'll:
+  # - Calculate the offsets in x using `sizes`
+  # - Allocate new sizes, starts, ends.
+  #   - For sizes, just duplicate `x` sizes
+  #   - For starts and ends, you can calculate the required size
+  # - Iterate along x.
+  #   - If `index != i` then assign the original starts/ends of `x`
+  #   - If `index == i` then assign the new sizes/starts/ends from `value`
+
+  # In C++, we'll give the sorted `i` indices. Since they're sorted, we just
+  # check whether each `i` is equal to the current index.
+  #
+  # int n_idx = indices.size();
+  # int current_pos = 0;
+  #
+  # for (int i = 0; i < n; i++) {
+  #   if (current_pos < n_idx && i == indices[current_pos]) {
+  #     // do something
+  #     current_pos++;
+  #   } else {
+  #     // do something else
+  #   }
+  # }
+}
+sub_set <- function(x, i) {
+  i <- vctrs::vec_as_location(i, n = length(x), names = names(x))
+
+  # int n_sets = indices.size();
+  # IntegerVector out_sizes = no_init(n_sets);
+  #
+  # // Calculate the number of spans in the output vector and assign sizes
+  # int n_spans = 0;
+  # for (int i = 0; i < n_sets; i++) {
+  #   int index = indices[i];
+  #
+  #   out_sizes[i] = x_sizes[index];
+  #   n_spans += x_sizes[index];
+  # }
+  # NumericVector out_starts = no_init(n_spans);
+  # NumericVector out_ends = no_init(n_spans);
+  #
+  # // Sub-Assign
+  # // TODO: Think about this, there should be an efficient way to pull elements
+  # //       out of `x` sizes, starts, and ends. Using the sizes as offsets.
+}
+
+# class ------------------------------------------------------------------------
+
 #' @export
 new_iset <- function(sizes, starts, ends) {
   vctrs::new_vctr(
@@ -6,6 +85,11 @@ new_iset <- function(sizes, starts, ends) {
     ends = ends,
     class = "iset"
   )
+}
+
+#' @export
+is_iset <- function(x) {
+  inherits(x, "iset")
 }
 
 #' @export
@@ -45,12 +129,13 @@ vec_cast.iset.data.frame <- function(x, to, ...) {
 #' @export
 vec_proxy.iset <- function(x, ...) {
   sizes <- unattr(unclass(x))
-  names(sizes) <- names(x) # TODO: Do we need this and does it preserve names?
+  sizes_chop <- na_to_one(sizes)
 
+  names(sizes) <- names(x) # TODO: Do we need this and does it preserve names?
   new_data_frame(list(
     sizes = sizes,
-    starts = starts_list(x),
-    ends = ends_list(x)
+    starts = vec_chop(attr(x, "starts"), sizes = sizes_chop),
+    ends = vec_chop(attr(x, "ends"), sizes = sizes_chop)
   ))
 }
 
@@ -76,8 +161,8 @@ vec_restore.iset <- function(x, to, ...) {
   # - Does attaching attributes impact equality? If so, define a separate `vec_proxy_equals()`.
   new_iset(
     sizes = x[["sizes"]],
-    starts = list_of_numeric_unchop_cpp(x[["starts"]]),
-    ends = list_of_numeric_unchop_cpp(x[["ends"]])
+    starts = listof_dbl_unchop_cpp(x[["starts"]]),
+    ends = listof_dbl_unchop_cpp(x[["ends"]])
   )
 }
 
@@ -100,23 +185,50 @@ vec_restore.iset <- function(x, to, ...) {
   vctrs::vec_assign(x, i, value)
 }
 
-starts_list <- function(x) {
-  sizes <- unattr(unclass(x))
-  sizes[is.na(sizes)] <- 1L
-  vctrs::vec_chop(attr(x, "starts"), sizes = sizes)
+# NOTE: When an interval set is `NA` the starts/ends list columns contains `NA_real_`
+#       and not `NULL`. So `NA` proxy rows aren't considered `NA` by {vctrs}.
+#' @export
+is.na.iset <- function(x) {
+  is.na(unclass(x))
 }
 
-ends_list <- function(x) {
-  sizes <- unattr(unclass(x))
-  sizes[is.na(sizes)] <- 1L
-  vctrs::vec_chop(attr(x, "ends"), sizes = sizes)
+# Set Operations ---------------------------------------------------------------
+
+new_intersect <- function(x, y) {
+  stopifnot(is_iset(x), is_iset(y))
+  stopifnot(length(x) == length(y) || length(x) == 1L || length(y) == 1L)
+
+  out <- intersect_cpp(
+    x_size = unattr(unclass(x)),
+    x_starts = attr(x, "starts"),
+    x_ends = attr(x, "ends"),
+    y_size = unattr(unclass(y)),
+    y_starts = attr(y, "starts"),
+    y_ends = attr(y, "ends")
+  )
+  new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
 }
 
-points_unchop <- function(x) {
-  null_at <- vapply(x, is.null, TRUE)
-  x[null_at] <- list(NA_real_)
-  unlist(x)
+# Utils ------------------------------------------------------------------------
+
+# get_sizes <- function(x) unattr(unclass(x))
+# get_starts <- function(x) attr(x, "starts")
+# get_ends <- function(x) attr(x, "ends")
+
+na_to_one <- function(x) {
+  x[is.na(x)] <- 1L
+  x
 }
+
+# starts_chop <- function(x, sizes) {
+#   sizes[is.na(sizes)] <- 1L
+#   vctrs::vec_chop(attr(x, "starts"), sizes = sizes)
+# }
+#
+# ends_chop <- function(x, sizes) {
+#   sizes[is.na(sizes)] <- 1L
+#   vctrs::vec_chop(attr(x, "ends"), sizes = sizes)
+# }
 
 unattr <- function(x) {
   attributes(x) <- NULL
