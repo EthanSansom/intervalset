@@ -133,15 +133,20 @@ old_x <- as_old_iset(x)
 old_y <- as_old_iset(y)
 
 bench::mark(
-  old_intersect(old_x, old_y),
+  # old_intersect(old_x, old_y),
   new_intersect(x, y),
-  intersect_no_initialization(x, y),
+  # intersect_no_initialization(x, y),
   # intersect_span_set_only(x, y),
-  intersect_span_buffer_only_cpp(x, y),
+  # intersect_span_buffer_only_cpp(x, y),
   # intersect_extract_only(x, y),
   # intersect_do_nothing_cpp(x, y),
   check = FALSE
 )[1:6]
+
+# A tibble: 1 × 6
+# expression               min   median `itr/sec` mem_alloc `gc/sec`
+# <bch:expr>          <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+# new_intersect(x, y)    557µs    595µs     1626.     399KB     2.06
 
 x_sizes <- unclass(unattr(x)) # Integer 10,000
 x_starts <- attr(x, "starts") # Numeric 10,000

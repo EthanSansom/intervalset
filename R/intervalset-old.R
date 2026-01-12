@@ -26,17 +26,14 @@ is_iset0 <- function(x) {
 #' @export
 format.iset0 <- function(x, ...) {
   fmt <- function(x) {
-    paste0("{", paste0("[", starts(x), ", ", ends(x), "]", collapse = ", "), "}")
+    paste0("{", paste0("[", x[, 1], ", ", x[, 2], "]", collapse = ", "), "}")
   }
+  is_hole <- function(x) purrr::map_lgl(x, ~ is.matrix(.x) && length(.x) == 0L)
 
   out <- purrr::map_chr(x, fmt)
   out[is_hole(x)] <- "{}"
   out[is.na(x)] <- NA_character_
   out
-}
-
-is_hole <- function(x) {
-  purrr::map_lgl(x, ~ is.matrix(.x) && length(.x) == 0L)
 }
 
 # set operations ---------------------------------------------------------------
@@ -48,19 +45,9 @@ old_intersect <- function(x, y) {
   sets <- vec_recycle_common(x, y)
 
   new_iset0_impl(
-    cpp_intersect_interval_sets(
+    old_intersect_cpp(
       vctrs::vec_data(sets[[1]]),
       vctrs::vec_data(sets[[2]])
     )
   )
-}
-
-# utils ------------------------------------------------------------------------
-
-starts <- function(ivs) {
-  ivs[ , 1]
-}
-
-ends <- function(ivs) {
-  ivs[ , 2]
 }

@@ -48,15 +48,12 @@ List map_binary_op(const SpanSetVector& x, const SpanSetVector& y, Op op) {
   const int n = xn; // Size compatibility of `x` and `y` are checked in R
   SpanBuffer buffer(n, op.max_spans(x.n_spans(), y.n_spans()));
   int x_span = 0, y_span = 0;
-  int x_size, y_size; // TEMP
 
   for (int i = 0; i < n; i++) {
     if (!(i & 8191)) checkUserInterrupt();
 
-    // int x_size = x.sizes[i];
-    // int y_size = y.sizes[i];
-    x_size = x.sizes[i];
-    y_size = y.sizes[i];
+    int x_size = x.sizes[i];
+    int y_size = y.sizes[i];
 
     if (x_size == NA_INTEGER || y_size == NA_INTEGER) {
       buffer.add_na_element();

@@ -1,5 +1,5 @@
-#ifndef PHINTERVAL_UTILS_H_
-#define PHINTERVAL_UTILS_H_
+#ifndef INTERVALSET_UTILS_OLD_H_
+#define INTERVALSET_UTILS_OLD_H_
 
 #include <Rcpp.h>
 #include <vector>

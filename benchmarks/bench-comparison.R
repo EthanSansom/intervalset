@@ -4,43 +4,6 @@ load_all()
 
 shuffle <- function(x) sample(x, length(x), FALSE)
 
-# helpers ----------------------------------------------------------------------
-
-isets_compare <- function(old_iset, new_iset) {
-  stopifnot(inherits(old_iset, "iset0"), inherits(new_iset, "iset"))
-  old_sizes <- purrr::map_int(old_iset, ~ ifelse(is.null(.x), NA_integer_, nrow(.x)))
-  old_starts <- purrr::map(old_iset, ~ if (is.null(.x)) { NA_real_ } else { .x[, 1] }) |> unlist()
-  old_ends <- purrr::map(old_iset, ~ if (is.null(.x)) { NA_real_ } else { .x[, 2] }) |> unlist()
-
-  new_sizes <- unattr(unclass(new_iset))
-  new_starts <- attr(new_iset, "starts")
-  new_ends <- attr(new_iset, "ends")
-
-  waldo::compare(
-    list(sizes = old_sizes, starts = old_starts, ends = old_ends),
-    list(sizes = new_sizes, starts = new_starts, ends = new_ends)
-  )
-}
-
-as_old_iset <- function(x) {
-  stopifnot(inherits(x, "iset"))
-  new_iset0(
-    sizes = unattr(unclass(x)),
-    starts = attr(x, "starts"),
-    ends = attr(x, "ends")
-  )
-}
-
-as_new_iset <- function(x) {
-  stopifnot(inherits(x, "iset0"))
-
-  sizes <- purrr::map_int(x, ~ ifelse(is.null(.x), NA_integer_, nrow(.x)))
-  starts <- purrr::map(x, ~ if (is.null(.x)) { NA_real_ } else { .x[, 1] }) |> unlist()
-  ends <- purrr::map(x, ~ if (is.null(.x)) { NA_real_ } else { .x[, 2] }) |> unlist()
-
-  new_iset(sizes, starts, ends)
-}
-
 # testing ----------------------------------------------------------------------
 
 iset1 <- new_iset(

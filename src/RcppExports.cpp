@@ -10,79 +10,31 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// cpp_intersect_interval_sets
-List cpp_intersect_interval_sets(const List& x, const List& y);
-RcppExport SEXP _intervalset_cpp_intersect_interval_sets(SEXP xSEXP, SEXP ySEXP) {
+// new_intersect_cpp
+List new_intersect_cpp(IntegerVector x_size, NumericVector x_starts, NumericVector x_ends, IntegerVector y_size, NumericVector y_starts, NumericVector y_ends);
+RcppExport SEXP _intervalset_new_intersect_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(new_intersect_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// old_intersect_cpp
+List old_intersect_cpp(const List& x, const List& y);
+RcppExport SEXP _intervalset_old_intersect_cpp(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type x(xSEXP);
     Rcpp::traits::input_parameter< const List& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_intersect_interval_sets(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
-// intersect_cpp
-List intersect_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
-RcppExport SEXP _intervalset_intersect_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
-    rcpp_result_gen = Rcpp::wrap(intersect_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
-    return rcpp_result_gen;
-END_RCPP
-}
-// span_set_only_cpp
-List span_set_only_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
-RcppExport SEXP _intervalset_span_set_only_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
-    rcpp_result_gen = Rcpp::wrap(span_set_only_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
-    return rcpp_result_gen;
-END_RCPP
-}
-// do_nothing_cpp
-List do_nothing_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
-RcppExport SEXP _intervalset_do_nothing_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
-    rcpp_result_gen = Rcpp::wrap(do_nothing_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
-    return rcpp_result_gen;
-END_RCPP
-}
-// span_buffer_only_cpp
-List span_buffer_only_cpp(const IntegerVector& x_size, const NumericVector& x_starts, const NumericVector& x_ends, const IntegerVector& y_size, const NumericVector& y_starts, const NumericVector& y_ends);
-RcppExport SEXP _intervalset_span_buffer_only_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerVector& >::type x_size(x_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_starts(x_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type x_ends(x_endsSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y_size(y_sizeSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_starts(y_startsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y_ends(y_endsSEXP);
-    rcpp_result_gen = Rcpp::wrap(span_buffer_only_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    rcpp_result_gen = Rcpp::wrap(old_intersect_cpp(x, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -99,11 +51,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_intervalset_cpp_intersect_interval_sets", (DL_FUNC) &_intervalset_cpp_intersect_interval_sets, 2},
-    {"_intervalset_intersect_cpp", (DL_FUNC) &_intervalset_intersect_cpp, 6},
-    {"_intervalset_span_set_only_cpp", (DL_FUNC) &_intervalset_span_set_only_cpp, 6},
-    {"_intervalset_do_nothing_cpp", (DL_FUNC) &_intervalset_do_nothing_cpp, 6},
-    {"_intervalset_span_buffer_only_cpp", (DL_FUNC) &_intervalset_span_buffer_only_cpp, 6},
+    {"_intervalset_new_intersect_cpp", (DL_FUNC) &_intervalset_new_intersect_cpp, 6},
+    {"_intervalset_old_intersect_cpp", (DL_FUNC) &_intervalset_old_intersect_cpp, 2},
     {"_intervalset_listof_dbl_unchop_cpp", (DL_FUNC) &_intervalset_listof_dbl_unchop_cpp, 1},
     {NULL, NULL, 0}
 };

@@ -125,7 +125,6 @@ vec_cast.iset.data.frame <- function(x, to, ...) {
 
 # TODO: Look at which `.vctrs_vctr` methods call the proxy (e.g. length()).
 #       The proxy is slow, so we should avoid it where possible.
-
 #' @export
 vec_proxy.iset <- function(x, ...) {
   sizes <- unattr(unclass(x))
@@ -192,13 +191,13 @@ is.na.iset <- function(x) {
   is.na(unclass(x))
 }
 
-# Set Operations ---------------------------------------------------------------
+# set operations ---------------------------------------------------------------
 
 new_intersect <- function(x, y) {
   stopifnot(is_iset(x), is_iset(y))
   stopifnot(length(x) == length(y) || length(x) == 1L || length(y) == 1L)
 
-  out <- intersect_cpp(
+  out <- new_intersect_cpp(
     x_size = unattr(unclass(x)),
     x_starts = attr(x, "starts"),
     x_ends = attr(x, "ends"),
@@ -209,28 +208,41 @@ new_intersect <- function(x, y) {
   new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
 }
 
-# Utils ------------------------------------------------------------------------
-
-# get_sizes <- function(x) unattr(unclass(x))
-# get_starts <- function(x) attr(x, "starts")
-# get_ends <- function(x) attr(x, "ends")
+# utils ------------------------------------------------------------------------
 
 na_to_one <- function(x) {
   x[is.na(x)] <- 1L
   x
 }
 
-# starts_chop <- function(x, sizes) {
-#   sizes[is.na(sizes)] <- 1L
-#   vctrs::vec_chop(attr(x, "starts"), sizes = sizes)
-# }
-#
-# ends_chop <- function(x, sizes) {
-#   sizes[is.na(sizes)] <- 1L
-#   vctrs::vec_chop(attr(x, "ends"), sizes = sizes)
-# }
-
 unattr <- function(x) {
   attributes(x) <- NULL
   x
+}
+
+# comparison helpers -----------------------------------------------------------
+
+isets_compare <- function(old_iset, new_iset) {
+  stopifnot(inherits(old_iset, "iset0"), inherits(new_iset, "iset"))
+  waldo::compare(as_new_iset(old_iset), new_iset)
+}
+
+as_old_iset <- function(x) {
+  stopifnot(inherits(x, "iset"))
+
+  new_iset0(
+    sizes = unattr(unclass(x)),
+    starts = attr(x, "starts"),
+    ends = attr(x, "ends")
+  )
+}
+
+as_new_iset <- function(x) {
+  stopifnot(inherits(x, "iset0"))
+
+  sizes <- purrr::map_int(x, ~ ifelse(is.null(.x), NA_integer_, nrow(.x)))
+  starts <- purrr::map(x, ~ if (is.null(.x)) { NA_real_ } else { .x[, 1] }) |> unlist()
+  ends <- purrr::map(x, ~ if (is.null(.x)) { NA_real_ } else { .x[, 2] }) |> unlist()
+
+  new_iset(sizes, starts, ends)
 }

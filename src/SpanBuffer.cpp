@@ -54,9 +54,6 @@ void SpanBuffer::finish_element() {
 
 List SpanBuffer::get_results() {
   return List::create(
-    // Named("starts") = s_starts[Range(0, current_point - 1)],
-    // Named("ends") = s_ends[Range(0, current_point - 1)],
-
     Named("starts") = head(s_starts, current_point),
     Named("ends") = head(s_ends, current_point),
     Named("sizes") = s_sizes

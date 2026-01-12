@@ -1,12 +1,12 @@
-#include "phinterval-intersect.h"
-#include "phinterval-utils.h"
+#include "set_operations-old.h"
+#include "utils-old.h"
 #include <Rcpp.h>
 #include <algorithm>
 #include <vector>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List cpp_intersect_interval_sets(const List& x, const List& y) {
+List old_intersect_cpp(const List& x, const List& y) {
   return binary_interval_set_op(x, y, intersect_interval_set);
 }
 

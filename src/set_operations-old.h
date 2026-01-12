@@ -1,5 +1,5 @@
-#ifndef PHINTERVAL_INTERSECT_H_
-#define PHINTERVAL_INTERSECT_H_
+#ifndef INTERVALSET_SET_OPERATIONS_OLD_H_
+#define INTERVALSET_SET_OPERATIONS_OLD_H_
 
 #include <Rcpp.h>
 using namespace Rcpp;
