@@ -17,8 +17,8 @@ new_squash_na_cpp <- function(sizes, starts, ends) {
     .Call(`_intervalset_new_squash_na_cpp`, sizes, starts, ends)
 }
 
-new_squash_2_cpp <- function(starts, ends, has_nas) {
-    .Call(`_intervalset_new_squash_2_cpp`, starts, ends, has_nas)
+new_squash_2_cpp <- function(starts, ends) {
+    .Call(`_intervalset_new_squash_2_cpp`, starts, ends)
 }
 
 old_squash_cpp <- function(x) {

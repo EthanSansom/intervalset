@@ -40,13 +40,13 @@ isets_compare(
 
 squash_starts <- as.numeric(seq(1, 10*1000*5, by = 5))
 squash_ends <- squash_starts + 1 + sample(0:15, length(x_starts), TRUE)
+sizes <- rep(1L, length(squash_starts))
 
 # Adding NA's
-nas_at <- sample(seq_along(squash_starts), 1000, FALSE)
-squash_starts[nas_at] <- NA_real_
-squash_ends[nas_at] <- NA_real_
-sizes <- rep(1L, length(squash_starts))
-sizes[nas_at] <- NA_integer_
+# nas_at <- sample(seq_along(squash_starts), 1000, FALSE)
+# squash_starts[nas_at] <- NA_real_
+# squash_ends[nas_at] <- NA_real_
+# sizes[nas_at] <- NA_integer_
 
 new_x <- new_iset(
   sizes = sizes,

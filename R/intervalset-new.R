@@ -257,29 +257,15 @@ new_squash_2 <- function(x, na.rm = TRUE) {
     return(new_iset(integer(), numeric(), numeric()))
   }
 
-  # TEMP: Test just removing NA's in R
   if (has_nas) {
     starts <- attr(x, "starts")
     ends <- attr(x, "ends")
-    nas_at <- is.na(starts)
-    out <- new_squash_2_cpp(
-      starts = starts[!nas_at],
-      ends = ends[!nas_at],
-      has_nas = FALSE
-    )
+    nas <- is.na(starts)
+    out <- new_squash_2_cpp(starts = starts[!nas], ends = ends[!nas])
   } else {
-    out <- new_squash_2_cpp(
-      starts = attr(x, "starts"),
-      ends = attr(x, "ends"),
-      has_nas = FALSE
-    )
+    out <- new_squash_2_cpp(starts = attr(x, "starts"), ends = attr(x, "ends"))
   }
 
-  # out <- new_squash_2_cpp(
-  #   starts = attr(x, "starts"),
-  #   ends = attr(x, "ends"),
-  #   has_nas = has_nas
-  # )
   new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
 }
 

@@ -98,7 +98,7 @@ inline bool is_na(double x) {
 }
 
 // [[Rcpp::export]]
-List new_squash_2_cpp(NumericVector starts, NumericVector ends, bool has_nas) {
+List new_squash_2_cpp(NumericVector starts, NumericVector ends) {
   int n = starts.size();
 
   const double* p_starts = REAL(starts);
@@ -107,30 +107,13 @@ List new_squash_2_cpp(NumericVector starts, NumericVector ends, bool has_nas) {
   std::vector<int> idx(n);
   std::iota(idx.begin(), idx.end(), 0);
 
-  if (has_nas) {
-    std::sort(idx.begin(), idx.end(), [&](int i, int j) {
-      double si = p_starts[i];
-      double sj = p_starts[j];
-      bool na_i = is_na(si);
-      bool na_j = is_na(sj);
+  std::sort(idx.begin(), idx.end(), [&](int i, int j) {
+    double si = p_starts[i];
+    double sj = p_starts[j];
 
-      // Push NAs to the beginning
-      if (na_i && !na_j) return true;
-      if (!na_i && na_j) return false;
-      if (na_i && na_j) return false;
-
-      if (si != sj) return si < sj;
-      return p_ends[i] < p_ends[j];
-    });
-  } else {
-    std::sort(idx.begin(), idx.end(), [&](int i, int j) {
-      double si = p_starts[i];
-      double sj = p_starts[j];
-
-      if (si != sj) return si < sj;
-      return p_ends[i] < p_ends[j];
-    });
-  }
+    if (si != sj) return si < sj;
+    return p_ends[i] < p_ends[j];
+  });
 
   NumericVector out_starts = no_init(n);
   NumericVector out_ends = no_init(n);
@@ -138,44 +121,32 @@ List new_squash_2_cpp(NumericVector starts, NumericVector ends, bool has_nas) {
   double* p_out_e = REAL(out_ends);
   int count = 0;
 
-  // Skip NA values at the front of the sorted vector
-  int i = 0;
-  if (has_nas) {
-    while (i < n && is_na(p_starts[idx[i]])) {
-      i++;
-    }
-  }
+  int row = idx[0];
+  double current_s = p_starts[row];
+  double current_max_e = p_ends[row];
 
-  // TODO: We'll need to hand back an NA set in an `else` statement here
-  if (i < n) {
-    int first_row = idx[i];
-    double current_s = p_starts[first_row];
-    double current_max_e = p_ends[first_row];
-    i++;
+  for (int i = 1; i < n; ++i) {
+    int row = idx[i];
+    double next_s = p_starts[row];
+    double next_e = p_ends[row];
 
-    for (; i < n; ++i) {
-      int row = idx[i];
-      double next_s = p_starts[row];
-      double next_e = p_ends[row];
-
-      if (next_s <= current_max_e) {
-        if (next_e > current_max_e) {
-          current_max_e = next_e;
-        }
-      } else {
-        p_out_s[count] = current_s;
-        p_out_e[count] = current_max_e;
-        count++;
-
-        current_s = next_s;
+    if (next_s <= current_max_e) {
+      if (next_e > current_max_e) {
         current_max_e = next_e;
       }
-    }
+    } else {
+      p_out_s[count] = current_s;
+      p_out_e[count] = current_max_e;
+      count++;
 
-    p_out_s[count] = current_s;
-    p_out_e[count] = current_max_e;
-    count++;
+      current_s = next_s;
+      current_max_e = next_e;
+    }
   }
+
+  p_out_s[count] = current_s;
+  p_out_e[count] = current_max_e;
+  count++;
 
   return List::create(
     Named("starts") = head(out_starts, count),
