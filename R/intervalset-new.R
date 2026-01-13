@@ -191,8 +191,14 @@ is.na.iset <- function(x) {
   is.na(unclass(x))
 }
 
+#' @export
+length.iset <- function(x) {
+  length(unclass(x))
+}
+
 # set operations ---------------------------------------------------------------
 
+#' @export
 new_intersect <- function(x, y) {
   stopifnot(is_iset(x), is_iset(y))
   stopifnot(length(x) == length(y) || length(x) == 1L || length(y) == 1L)
@@ -208,7 +214,80 @@ new_intersect <- function(x, y) {
   new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
 }
 
+#' @export
+new_squash <- function(x, na.rm = TRUE) {
+  stopifnot("`x` must be an <iset>." = is_iset(x))
+  if (!na.rm && anyNA(unclass(x))) {
+    return(new_iset(NA_integer_, NA_real_, NA_real_))
+  }
+  if (length(unclass(x)) == 0) {
+    return(new_iset(integer(), numeric(), numeric()))
+  }
+
+  out <- new_squash_cpp(
+    starts = attr(x, "starts"),
+    ends = attr(x, "ends")
+  )
+  new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
+}
+
+new_squash_2 <- function(x, na.rm = TRUE) {
+  stopifnot("`x` must be an <iset>." = is_iset(x))
+  if (!na.rm && anyNA(unclass(x))) {
+    return(new_iset(NA_integer_, NA_real_, NA_real_))
+  }
+  if (length(unclass(x)) == 0) {
+    return(new_iset(integer(), numeric(), numeric()))
+  }
+
+  out <- new_squash_cpp(
+    starts = attr(x, "starts"),
+    ends = attr(x, "ends")
+  )
+  new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
+}
+
+new_squash_2 <- function(x, na.rm = TRUE) {
+  stopifnot("`x` must be an <iset>." = is_iset(x))
+  has_nas <- anyNA(unclass(x))
+  if (!na.rm && has_nas) {
+    return(new_iset(NA_integer_, NA_real_, NA_real_))
+  }
+  if (length(unclass(x)) == 0) {
+    return(new_iset(integer(), numeric(), numeric()))
+  }
+
+  # TEMP: Test just removing NA's in R
+  if (has_nas) {
+    starts <- attr(x, "starts")
+    ends <- attr(x, "ends")
+    nas_at <- is.na(starts)
+    out <- new_squash_2_cpp(
+      starts = starts[!nas_at],
+      ends = ends[!nas_at],
+      has_nas = FALSE
+    )
+  } else {
+    out <- new_squash_2_cpp(
+      starts = attr(x, "starts"),
+      ends = attr(x, "ends"),
+      has_nas = FALSE
+    )
+  }
+
+  # out <- new_squash_2_cpp(
+  #   starts = attr(x, "starts"),
+  #   ends = attr(x, "ends"),
+  #   has_nas = has_nas
+  # )
+  new_iset(out[["sizes"]], out[["starts"]], out[["ends"]])
+}
+
 # utils ------------------------------------------------------------------------
+
+remove_na <- function(x) {
+  x[!is.na(x)]
+}
 
 na_to_one <- function(x) {
   x[is.na(x)] <- 1L

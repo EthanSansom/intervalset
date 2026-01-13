@@ -38,6 +38,55 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// new_squash_cpp
+List new_squash_cpp(NumericVector starts, NumericVector ends);
+RcppExport SEXP _intervalset_new_squash_cpp(SEXP startsSEXP, SEXP endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type starts(startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ends(endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(new_squash_cpp(starts, ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// new_squash_na_cpp
+List new_squash_na_cpp(IntegerVector sizes, NumericVector starts, NumericVector ends);
+RcppExport SEXP _intervalset_new_squash_na_cpp(SEXP sizesSEXP, SEXP startsSEXP, SEXP endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type sizes(sizesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type starts(startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ends(endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(new_squash_na_cpp(sizes, starts, ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// new_squash_2_cpp
+List new_squash_2_cpp(NumericVector starts, NumericVector ends, bool has_nas);
+RcppExport SEXP _intervalset_new_squash_2_cpp(SEXP startsSEXP, SEXP endsSEXP, SEXP has_nasSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type starts(startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ends(endsSEXP);
+    Rcpp::traits::input_parameter< bool >::type has_nas(has_nasSEXP);
+    rcpp_result_gen = Rcpp::wrap(new_squash_2_cpp(starts, ends, has_nas));
+    return rcpp_result_gen;
+END_RCPP
+}
+// old_squash_cpp
+NumericMatrix old_squash_cpp(const NumericMatrix x);
+RcppExport SEXP _intervalset_old_squash_cpp(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(old_squash_cpp(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // listof_dbl_unchop_cpp
 NumericVector listof_dbl_unchop_cpp(const List& chopped);
 RcppExport SEXP _intervalset_listof_dbl_unchop_cpp(SEXP choppedSEXP) {
@@ -53,6 +102,10 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_intervalset_new_intersect_cpp", (DL_FUNC) &_intervalset_new_intersect_cpp, 6},
     {"_intervalset_old_intersect_cpp", (DL_FUNC) &_intervalset_old_intersect_cpp, 2},
+    {"_intervalset_new_squash_cpp", (DL_FUNC) &_intervalset_new_squash_cpp, 2},
+    {"_intervalset_new_squash_na_cpp", (DL_FUNC) &_intervalset_new_squash_na_cpp, 3},
+    {"_intervalset_new_squash_2_cpp", (DL_FUNC) &_intervalset_new_squash_2_cpp, 3},
+    {"_intervalset_old_squash_cpp", (DL_FUNC) &_intervalset_old_squash_cpp, 1},
     {"_intervalset_listof_dbl_unchop_cpp", (DL_FUNC) &_intervalset_listof_dbl_unchop_cpp, 1},
     {NULL, NULL, 0}
 };

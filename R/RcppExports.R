@@ -9,6 +9,22 @@ old_intersect_cpp <- function(x, y) {
     .Call(`_intervalset_old_intersect_cpp`, x, y)
 }
 
+new_squash_cpp <- function(starts, ends) {
+    .Call(`_intervalset_new_squash_cpp`, starts, ends)
+}
+
+new_squash_na_cpp <- function(sizes, starts, ends) {
+    .Call(`_intervalset_new_squash_na_cpp`, sizes, starts, ends)
+}
+
+new_squash_2_cpp <- function(starts, ends, has_nas) {
+    .Call(`_intervalset_new_squash_2_cpp`, starts, ends, has_nas)
+}
+
+old_squash_cpp <- function(x) {
+    .Call(`_intervalset_old_squash_cpp`, x)
+}
+
 listof_dbl_unchop_cpp <- function(chopped) {
     .Call(`_intervalset_listof_dbl_unchop_cpp`, chopped)
 }

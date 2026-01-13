@@ -51,3 +51,22 @@ old_intersect <- function(x, y) {
     )
   )
 }
+
+#' @export
+old_squash <- function(x, na.rm = TRUE) {
+  stopifnot("`x` must be an <iset0>." = is_iset0(x))
+  any_na <- anyNA(x)
+  if (any_na && !na.rm) {
+    return(new_iset0(NA_integer_, NA_real_, NA_real_))
+  }
+  if (length(x) == 0) {
+    return(new_iset0(integer(), numeric(), numeric()))
+  }
+
+  # Collapse the matrices to obtain a single interval set. This removes NA's.
+  interval_set <- do.call(rbind, vec_data(x))
+  if (is.null(interval_set)) {
+    return(new_iset0(NA_integer_, NA_real_, NA_real_))
+  }
+  new_iset0_impl(list(old_squash_cpp(interval_set)))
+}

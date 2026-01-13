@@ -36,6 +36,48 @@ isets_compare(
 
 # Bench ------------------------------------------------------------------------
 
+# Squash -----------------------------------------------------------------------
+
+squash_starts <- as.numeric(seq(1, 10*1000*5, by = 5))
+squash_ends <- squash_starts + 1 + sample(0:15, length(x_starts), TRUE)
+
+# Adding NA's
+nas_at <- sample(seq_along(squash_starts), 1000, FALSE)
+squash_starts[nas_at] <- NA_real_
+squash_ends[nas_at] <- NA_real_
+sizes <- rep(1L, length(squash_starts))
+sizes[nas_at] <- NA_integer_
+
+new_x <- new_iset(
+  sizes = sizes,
+  starts = squash_starts,
+  ends = squash_ends
+)
+old_x <- as_old_iset(new_x)
+
+ivs_x <- ivs::iv(squash_starts, squash_ends)
+
+# new_res <- new_squash(new_x)
+new_res <- new_squash_2(new_x)
+old_res <- old_squash(old_x)
+
+isets_compare(old_res, new_res)
+
+# We're about 2x faster than before, but still slow compared to other methods.
+# - `ivs` is 16x faster at "squashing" (AKA identifying groups)
+# - TODO: Is there a faster algorithm than sweep-line? How does ivs do it?
+#
+# UPDATE:
+# - Following ivs-ish approach we're much closer with `new_squash_2()`
+# - Attempting to remove/sort NA's in C++ was slow, just removing in R
+bench::mark(
+  new_squash(new_x),
+  new_squash_2(new_x),
+  old_squash(old_x),
+  ivs::iv_groups(ivs_x),
+  check = FALSE
+)
+
 ## Single Spans ----------------------------------------------------------------
 
 # These are intervals of 1 to 4 in length
