@@ -1,7 +1,7 @@
-#ifndef INTERVALSET_BINARY_OPERATORS_H
-#define INTERVALSET_BINARY_OPERATORS_H
+#ifndef INTERVALSET_V1_BINARY_OPERATORS_H
+#define INTERVALSET_V1_BINARY_OPERATORS_H
 
-#include "SpanBuffer.h"
+#include "v1_SpanBuffer.h"
 
 #include <Rcpp.h>
 using namespace Rcpp;

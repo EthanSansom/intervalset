@@ -1,5 +1,5 @@
-#include "endpoint.h"
-#include "utils-old.h"
+#include "v0_endpoint.h"
+#include "v0_utils.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -31,7 +31,7 @@ NumericMatrix squash(const Endpoints& endpoints) {
 }
 
 // [[Rcpp::export]]
-NumericMatrix old_squash_cpp(const NumericMatrix x) {
+NumericMatrix squash_v0_cpp(const NumericMatrix x) {
   int n { x.nrow() };
   if (n <= 1) return x;
 

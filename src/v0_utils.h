@@ -1,5 +1,5 @@
-#ifndef INTERVALSET_UTILS_OLD_H_
-#define INTERVALSET_UTILS_OLD_H_
+#ifndef INTERVALSET_V0_UTILS_H
+#define INTERVALSET_V0_UTILS_H
 
 #include <Rcpp.h>
 #include <vector>

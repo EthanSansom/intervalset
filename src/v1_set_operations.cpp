@@ -1,13 +1,13 @@
-#include "vectorization.h"
-#include "binary_operators.h"
+#include "v1_vectorization.h"
+#include "v1_binary_operators.h"
 
-#include "SpanBuffer.h" // TEMP
+#include "v1_SpanBuffer.h" // TEMP
 
 #include <Rcpp.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List new_intersect_cpp(
+List intersect_v1_cpp(
     IntegerVector x_size, NumericVector x_starts, NumericVector x_ends,
     IntegerVector y_size, NumericVector y_starts, NumericVector y_ends
 ) {

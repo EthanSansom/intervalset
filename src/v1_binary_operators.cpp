@@ -1,5 +1,5 @@
-#include "binary_operators.h"
-#include "SpanBuffer.h"
+#include "v1_binary_operators.h"
+#include "v1_SpanBuffer.h"
 
 #include <algorithm>
 #include <Rcpp.h>

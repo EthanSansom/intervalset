@@ -1,7 +1,7 @@
 #ifndef INTERVALSET_SPANSETVECTOR_H
 #define INTERVALSET_SPANSETVECTOR_H
 
-#include "SpanBuffer.h"
+#include "v1_SpanBuffer.h"
 
 #include <Rcpp.h>
 using namespace Rcpp;

@@ -1,8 +1,8 @@
-#ifndef INTERVALSET_VECTORIZATION_H
-#define INTERVALSET_VECTORIZATION_H
+#ifndef INTERVALSET_V1_VECTORIZATION_H
+#define INTERVALSET_V1_VECTORIZATION_H
 
-#include "SpanSetVector.h"
-#include "SpanBuffer.h"
+#include "v1_SpanSetVector.h"
+#include "v1_SpanBuffer.h"
 
 #include <Rcpp.h>
 using namespace Rcpp;

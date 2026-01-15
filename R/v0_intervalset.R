@@ -39,13 +39,13 @@ format.iset0 <- function(x, ...) {
 # set operations ---------------------------------------------------------------
 
 #' @export
-old_intersect <- function(x, y) {
+intersect_v0 <- function(x, y) {
   stopifnot("`x` must be an <iset0>." = is_iset0(x))
   stopifnot("`y` must be an <iset0>." = is_iset0(y))
   sets <- vec_recycle_common(x, y)
 
   new_iset0_impl(
-    old_intersect_cpp(
+    intersect_v0_cpp(
       vctrs::vec_data(sets[[1]]),
       vctrs::vec_data(sets[[2]])
     )
@@ -53,7 +53,7 @@ old_intersect <- function(x, y) {
 }
 
 #' @export
-old_squash <- function(x, na.rm = TRUE) {
+squash_v0 <- function(x, na.rm = TRUE) {
   stopifnot("`x` must be an <iset0>." = is_iset0(x))
   any_na <- anyNA(x)
   if (any_na && !na.rm) {
@@ -68,5 +68,5 @@ old_squash <- function(x, na.rm = TRUE) {
   if (is.null(interval_set)) {
     return(new_iset0(NA_integer_, NA_real_, NA_real_))
   }
-  new_iset0_impl(list(old_squash_cpp(interval_set)))
+  new_iset0_impl(list(squash_v0_cpp(interval_set)))
 }

@@ -1,12 +1,12 @@
-#include "set_operations-old.h"
-#include "utils-old.h"
+#include "v0_set_operations.h"
+#include "v0_utils.h"
 #include <Rcpp.h>
 #include <algorithm>
 #include <vector>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List old_intersect_cpp(const List& x, const List& y) {
+List intersect_v0_cpp(const List& x, const List& y) {
   return binary_interval_set_op(x, y, intersect_interval_set);
 }
 

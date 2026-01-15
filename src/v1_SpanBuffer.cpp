@@ -1,4 +1,4 @@
-#include "SpanBuffer.h"
+#include "v1_SpanBuffer.h"
 
 #include <Rcpp.h>
 using namespace Rcpp;

@@ -1,4 +1,4 @@
-#include "endpoint.h"
+#include "v0_endpoint.h"
 
 bool operator< (const Endpoint &a, const Endpoint &b) {
   if (a.value == b.value) {

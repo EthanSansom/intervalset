@@ -1,5 +1,5 @@
-#ifndef INTERVALSET_SPANBUFFER_H
-#define INTERVALSET_SPANBUFFER_H
+#ifndef INTERVALSET_V1_SPANBUFFER_H
+#define INTERVALSET_V1_SPANBUFFER_H
 
 #include <Rcpp.h>
 using namespace Rcpp;
