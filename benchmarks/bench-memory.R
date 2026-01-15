@@ -110,7 +110,7 @@ intersect_do_nothing <- function(x, y) {
 
 # expression           min  median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # <bch:expr>       <bch:t> <bch:t>     <dbl> <bch:byt>    <dbl> <int> <dbl>   <bch:tm> <list> <list>
-# 1 new_intersect(x… 548.5µs 574.4µs     1680.   398.8KB     2.49   676     1      402ms <NULL> <Rprofmem>
+# 1 intersect_v1(x… 548.5µs 574.4µs     1680.   398.8KB     2.49   676     1      402ms <NULL> <Rprofmem>
 # 2 intersect_no_in… 526.2µs 562.4µs     1726.   398.8KB     4.15   831     2      481ms <NULL> <Rprofmem>
 # 3 intersect_span_…  40.1µs  46.4µs    20345.    78.2KB     6.60  9254     3      455ms <NULL> <Rprofmem>
 # 4 intersect_span_…  41.1µs  47.6µs    20414.   273.7KB    20.7   7878     8      386ms <NULL> <Rprofmem>
@@ -133,8 +133,8 @@ old_x <- as_old_iset(x)
 old_y <- as_old_iset(y)
 
 bench::mark(
-  # old_intersect(old_x, old_y),
-  new_intersect(x, y),
+  # intersect_v0(old_x, old_y),
+  intersect_v1(x, y),
   # intersect_no_initialization(x, y),
   # intersect_span_set_only(x, y),
   # intersect_span_buffer_only_cpp(x, y),
@@ -146,7 +146,7 @@ bench::mark(
 # A tibble: 1 × 6
 # expression               min   median `itr/sec` mem_alloc `gc/sec`
 # <bch:expr>          <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-# new_intersect(x, y)    557µs    595µs     1626.     399KB     2.06
+# intersect_v1(x, y)    557µs    595µs     1626.     399KB     2.06
 
 x_sizes <- unclass(unattr(x)) # Integer 10,000
 x_starts <- attr(x, "starts") # Numeric 10,000
