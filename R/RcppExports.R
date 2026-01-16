@@ -25,3 +25,15 @@ squash_v1_cpp <- function(starts, ends) {
     .Call(`_intervalset_squash_v1_cpp`, starts, ends)
 }
 
+intersect_v2_cpp <- function(x_size, x_starts, x_ends, y_size, y_starts, y_ends) {
+    .Call(`_intervalset_intersect_v2_cpp`, x_size, x_starts, x_ends, y_size, y_starts, y_ends)
+}
+
+squash_v2_cpp <- function(starts, ends) {
+    .Call(`_intervalset_squash_v2_cpp`, starts, ends)
+}
+
+squash_by_cpp <- function(size, starts, ends, group_locs, na_rm) {
+    .Call(`_intervalset_squash_by_cpp`, size, starts, ends, group_locs, na_rm)
+}
+

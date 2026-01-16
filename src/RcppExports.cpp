@@ -86,6 +86,49 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// intersect_v2_cpp
+List intersect_v2_cpp(IntegerVector x_size, List x_starts, List x_ends, IntegerVector y_size, List y_starts, List y_ends);
+RcppExport SEXP _intervalset_intersect_v2_cpp(SEXP x_sizeSEXP, SEXP x_startsSEXP, SEXP x_endsSEXP, SEXP y_sizeSEXP, SEXP y_startsSEXP, SEXP y_endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type x_size(x_sizeSEXP);
+    Rcpp::traits::input_parameter< List >::type x_starts(x_startsSEXP);
+    Rcpp::traits::input_parameter< List >::type x_ends(x_endsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type y_size(y_sizeSEXP);
+    Rcpp::traits::input_parameter< List >::type y_starts(y_startsSEXP);
+    Rcpp::traits::input_parameter< List >::type y_ends(y_endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(intersect_v2_cpp(x_size, x_starts, x_ends, y_size, y_starts, y_ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// squash_v2_cpp
+List squash_v2_cpp(NumericVector starts, NumericVector ends);
+RcppExport SEXP _intervalset_squash_v2_cpp(SEXP startsSEXP, SEXP endsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type starts(startsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ends(endsSEXP);
+    rcpp_result_gen = Rcpp::wrap(squash_v2_cpp(starts, ends));
+    return rcpp_result_gen;
+END_RCPP
+}
+// squash_by_cpp
+List squash_by_cpp(IntegerVector size, List starts, List ends, List group_locs, bool na_rm);
+RcppExport SEXP _intervalset_squash_by_cpp(SEXP sizeSEXP, SEXP startsSEXP, SEXP endsSEXP, SEXP group_locsSEXP, SEXP na_rmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< List >::type starts(startsSEXP);
+    Rcpp::traits::input_parameter< List >::type ends(endsSEXP);
+    Rcpp::traits::input_parameter< List >::type group_locs(group_locsSEXP);
+    Rcpp::traits::input_parameter< bool >::type na_rm(na_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(squash_by_cpp(size, starts, ends, group_locs, na_rm));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_intervalset_subset_cpp", (DL_FUNC) &_intervalset_subset_cpp, 4},
@@ -94,6 +137,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_intervalset_listof_dbl_unchop_cpp", (DL_FUNC) &_intervalset_listof_dbl_unchop_cpp, 1},
     {"_intervalset_intersect_v1_cpp", (DL_FUNC) &_intervalset_intersect_v1_cpp, 6},
     {"_intervalset_squash_v1_cpp", (DL_FUNC) &_intervalset_squash_v1_cpp, 2},
+    {"_intervalset_intersect_v2_cpp", (DL_FUNC) &_intervalset_intersect_v2_cpp, 6},
+    {"_intervalset_squash_v2_cpp", (DL_FUNC) &_intervalset_squash_v2_cpp, 2},
+    {"_intervalset_squash_by_cpp", (DL_FUNC) &_intervalset_squash_by_cpp, 5},
     {NULL, NULL, 0}
 };
 
