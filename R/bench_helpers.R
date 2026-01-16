@@ -1,3 +1,5 @@
+shuffle <- function(x) sample(x, length(x), FALSE)
+
 isets_compare <- function(x, y) {
   waldo::compare(as_iset1(x), as_iset1(x))
 }
